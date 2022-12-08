@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { createUser } = require("../controllers/auth-controller");
+const { createUser, signin } = require("../controllers/auth-controller");
 
 router.get("/", (req, res) => {
   res.send("Testing authentication route");
@@ -9,6 +9,7 @@ router.get("/", (req, res) => {
 // Create a new user
 router.post("/signup", createUser);
 // Sign in
+router.post("/signin", signin);
 // Sign out
 
 module.exports = { router };

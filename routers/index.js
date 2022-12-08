@@ -1,10 +1,12 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const app = express();
 const { router: userRouter } = require("./user-router");
 const { router: authRouter } = require("./auth-router");
 
 // middleware
 app.use(express.json());
+app.use(cookieParser());
 
 // routers
 app.use("/api/auth", authRouter);
