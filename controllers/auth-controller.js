@@ -1,8 +1,9 @@
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const httpStatus = require("http-status");
+const { createError } = require("../utils/error");
 
-const createUser = async (req, res) => {
+const createUser = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
@@ -11,17 +12,9 @@ const createUser = async (req, res) => {
     await user.save();
     res.status(httpStatus.OK).send("User succesfully created!");
   } catch (err) {
-    // res.send(err);
-    const status = err.code === 11000 ? 409 : 500;
-    const message =
-      status === 409
-        ? "Email has been taken"
-        : "An error has occurred, please try again!";
-    res.status(status).json({
-      success: false,
-      status,
-      message,
-    });
+    const status = err.code === 11000 ? 409 : err.status;
+    const message = err.code === 11000 ? "Email has been taken" : err.message;
+    next(createError(status, message));
   }
 };
 
