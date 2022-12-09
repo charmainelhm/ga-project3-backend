@@ -36,6 +36,19 @@ const findVideo = async (req, res, next) => {
   }
 };
 
+const getRandomVideo = async (req, res, next) => {
+  try {
+    let nextVideo = await Video.findById(req.params.id);
+    const previousVideoId = nextVideo._id;
+    while (previousVideoId === nextVideo._id) {
+      nextVideo = await Video.aggregate([{ $sample: { size: 1 } }]);
+    }
+    res.status(200).json(nextVideo);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const deleteVideo = async (req, res, next) => {
   if (req.user.isAdmin) {
     try {
@@ -55,5 +68,6 @@ module.exports = {
   createVideo,
   findAllVideos,
   findVideo,
+  getRandomVideo,
   deleteVideo,
 };

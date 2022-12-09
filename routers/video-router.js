@@ -5,6 +5,7 @@ const {
   createVideo,
   findAllVideos,
   findVideo,
+  getRandomVideo,
   deleteVideo,
 } = require("../controllers/video-controller");
 
@@ -12,11 +13,14 @@ const {
 router.post("/", verifyToken, createVideo);
 
 // get all videos
-router.get("/", verifyToken, findAllVideos);
+router.get("/all", verifyToken, findAllVideos);
 
 // get video by id
-router.get("/:id", findVideo);
+router.get("/find/:id", findVideo);
+
 // get random video
+router.get("/random/:id", getRandomVideo);
+
 // delete video by id
 router.delete("/:id", verifyToken, deleteVideo);
 
