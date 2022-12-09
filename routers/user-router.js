@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { updateUser, deleteUser } = require("../controllers/user-controller");
+const {
+  updateUser,
+  deleteUser,
+  findUser,
+  findAllUsers,
+} = require("../controllers/user-controller");
 const { verifyToken } = require("../utils/verifyToken.js");
 
-router.get("/", (req, res) => {
-  res.send("Testing user route");
-});
+router.get("/", verifyToken, findAllUsers);
 
 // get user by id
+router.get("/:id", verifyToken, findUser);
 
 // update user by id
 router.put("/:id", verifyToken, updateUser);
