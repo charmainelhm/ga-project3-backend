@@ -27,4 +27,6 @@ router.put("/playlist/add/:id", verifyToken, addToUserPlaylist);
 // remove from user playlist
 router.put("/playlist/remove/:id", verifyToken, removeFromUserPlaylist);
 
+// retrieve user playlist
+
 module.exports = { router };

@@ -15,7 +15,7 @@ const findUser = async (req, res, next) => {
       createError(
         403,
         "You are not authorised to retrieve this user's account!"
-      ) // if user is not update his/her own account or user is not an admin
+      )
     );
   }
 };
@@ -30,7 +30,7 @@ const findAllUsers = async (req, res, next) => {
     }
   } else {
     return next(
-      createError(403, "You are not authorised to retrieve all users' account!") // if user is not update his/her own account or user is not an admin
+      createError(403, "You are not authorised to retrieve all users' account!") // if user id do not match or if user is not an admin update will not be allowed
     );
   }
 };
@@ -54,7 +54,7 @@ const updateUser = async (req, res, next) => {
     }
   } else {
     return next(
-      createError(403, "You are not authorised to update this user's playlist!") // if user is not update his/her own account or user is not an admin
+      createError(403, "You are not authorised to update this user's playlist!") //user can only add video to his/her own playlist
     );
   }
 };
@@ -64,7 +64,7 @@ const addToUserPlaylist = async (req, res, next) => {
       const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
         {
-          $addToSet: { playlist: req.body.videoId },
+          $addToSet: { playlist: req.body.videoId }, // prevents duplicated items in the array
         },
         { new: true }
       );
@@ -77,7 +77,7 @@ const addToUserPlaylist = async (req, res, next) => {
     }
   } else {
     return next(
-      createError(403, "You are not authorised to update this user's playlist!") // if user is not update his/her own account or user is not an admin
+      createError(403, "You are not authorised to update this user's playlist!") //user can only remove video from his/her own playlist
     );
   }
 };
