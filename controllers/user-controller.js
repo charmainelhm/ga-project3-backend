@@ -46,7 +46,55 @@ const updateUser = async (req, res, next) => {
         { new: true }
       );
 
-      res.status(200).json(updatedUser);
+      const { password, ...returnedUserData } = updatedUser._doc;
+
+      res.status(200).json(returnedUserData);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    return next(
+      createError(403, "You are not authorised to update this user's playlist!") // if user is not update his/her own account or user is not an admin
+    );
+  }
+};
+const addToUserPlaylist = async (req, res, next) => {
+  if (req.params.id === req.user.id) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $addToSet: { playlist: req.body.videoId },
+        },
+        { new: true }
+      );
+
+      const { password, ...returnedUserData } = updatedUser._doc;
+
+      res.status(200).json(returnedUserData);
+    } catch (err) {
+      next(err);
+    }
+  } else {
+    return next(
+      createError(403, "You are not authorised to update this user's playlist!") // if user is not update his/her own account or user is not an admin
+    );
+  }
+};
+const removeFromUserPlaylist = async (req, res, next) => {
+  if (req.params.id === req.user.id) {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $pull: { playlist: req.body.videoId },
+        },
+        { new: true }
+      );
+
+      const { password, ...returnedUserData } = updatedUser._doc;
+
+      res.status(200).json(returnedUserData);
     } catch (err) {
       next(err);
     }
@@ -78,4 +126,6 @@ module.exports = {
   deleteUser,
   findUser,
   findAllUsers,
+  addToUserPlaylist,
+  removeFromUserPlaylist,
 };
