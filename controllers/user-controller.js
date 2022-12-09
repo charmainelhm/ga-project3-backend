@@ -73,49 +73,37 @@ const populatePlaylist = async (req, res, next) => {
 };
 
 const addToUserPlaylist = async (req, res, next) => {
-  if (req.params.id === req.user.id) {
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          $addToSet: { playlist: req.body.videoId }, // prevents duplicated items in the array
-        },
-        { new: true }
-      );
-
-      const { password, ...returnedUserData } = updatedUser._doc;
-
-      res.status(200).json(returnedUserData);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    return next(
-      createError(403, "You are not authorised to update this user's playlist!") //user can only remove video from his/her own playlist
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $addToSet: { playlist: req.params.videoId }, // prevents duplicated items in the array
+      },
+      { new: true }
     );
+
+    const { password, ...returnedUserData } = updatedUser._doc;
+
+    res.status(200).json(returnedUserData);
+  } catch (err) {
+    next(err);
   }
 };
 const removeFromUserPlaylist = async (req, res, next) => {
-  if (req.params.id === req.user.id) {
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-          $pull: { playlist: req.body.videoId },
-        },
-        { new: true }
-      );
-
-      const { password, ...returnedUserData } = updatedUser._doc;
-
-      res.status(200).json(returnedUserData);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    return next(
-      createError(403, "You are not authorised to update this user's account!") // if user is not update his/her own account or user is not an admin
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $pull: { playlist: req.params.videoId },
+      },
+      { new: true }
     );
+
+    const { password, ...returnedUserData } = updatedUser._doc;
+
+    res.status(200).json(returnedUserData);
+  } catch (err) {
+    next(err);
   }
 };
 

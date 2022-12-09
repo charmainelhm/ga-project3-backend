@@ -22,13 +22,13 @@ router.put("/:id", verifyToken, updateUser);
 // delete user by id
 router.delete("/:id", verifyToken, deleteUser);
 
-// add to user playlist
-router.put("/playlist/add/:id", verifyToken, addToUserPlaylist);
-
-// remove from user playlist
-router.put("/playlist/remove/:id", verifyToken, removeFromUserPlaylist);
-
 // retrieve user playlist
 router.get("/playlist", verifyToken, populatePlaylist);
+
+// add to user playlist
+router.put("/playlist/add/:videoId", verifyToken, addToUserPlaylist);
+
+// remove from user playlist
+router.put("/playlist/remove/:videoId", verifyToken, removeFromUserPlaylist);
 
 module.exports = { router };
