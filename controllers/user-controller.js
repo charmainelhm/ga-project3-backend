@@ -1,5 +1,5 @@
 const { createError } = require("../utils/error");
-const { User } = require("../models");
+const { User, Video } = require("../models");
 
 const findUser = async (req, res, next) => {
   if (req.params.id === req.user.id || req.user.isAdmin) {
@@ -58,6 +58,20 @@ const updateUser = async (req, res, next) => {
     );
   }
 };
+
+const populatePlaylist = async (req, res, next) => {
+  try {
+    const { playlist } = await User.findById(req.user.id);
+    const populatedPlaylist = await Promise.all(
+      playlist.map((videoId) => Video.findById(videoId))
+    );
+
+    res.status(200).json(populatedPlaylist);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const addToUserPlaylist = async (req, res, next) => {
   if (req.params.id === req.user.id) {
     try {
@@ -128,4 +142,5 @@ module.exports = {
   findAllUsers,
   addToUserPlaylist,
   removeFromUserPlaylist,
+  populatePlaylist,
 };

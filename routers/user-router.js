@@ -5,6 +5,7 @@ const {
   deleteUser,
   findUser,
   findAllUsers,
+  populatePlaylist,
   addToUserPlaylist,
   removeFromUserPlaylist,
 } = require("../controllers/user-controller");
@@ -13,7 +14,7 @@ const { verifyToken } = require("../utils/verifyToken.js");
 router.get("/", verifyToken, findAllUsers);
 
 // get user by id
-router.get("/:id", verifyToken, findUser);
+router.get("/find/:id", verifyToken, findUser);
 
 // update user by id
 router.put("/:id", verifyToken, updateUser);
@@ -28,5 +29,6 @@ router.put("/playlist/add/:id", verifyToken, addToUserPlaylist);
 router.put("/playlist/remove/:id", verifyToken, removeFromUserPlaylist);
 
 // retrieve user playlist
+router.get("/playlist", verifyToken, populatePlaylist);
 
 module.exports = { router };
