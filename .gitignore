@@ -1,4 +1,2 @@
 node_modules
 .env
-controllers/user-controller.js
-routers/user-router.js
