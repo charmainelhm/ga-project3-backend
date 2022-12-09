@@ -1,11 +1,21 @@
 const express = require("express");
 const router = express.Router();
 const { verifyToken } = require("../utils/verifyToken");
-const { createVideo } = require("../controllers/video-controller");
+const {
+  createVideo,
+  findAllVideos,
+  findVideo,
+} = require("../controllers/video-controller");
 
-router.get("/", (req, res) => {
-  res.send("Testing video route");
-});
-
+// add new video
 router.post("/", verifyToken, createVideo);
+
+// get all videos
+router.get("/", verifyToken, findAllVideos);
+
+// get video by id
+router.get("/:id", verifyToken, findVideo);
+// get random video
+// delete video by id
+
 module.exports = { router };
