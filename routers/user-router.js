@@ -5,7 +5,7 @@ const {
   deleteUser,
   findUser,
   findAllUsers,
-  populatePlaylist,
+  findUserPlaylist,
   addToUserPlaylist,
   removeFromUserPlaylist,
 } = require("../controllers/user-controller");
@@ -23,7 +23,7 @@ router.put("/:id", verifyToken, updateUser);
 router.delete("/:id", verifyToken, deleteUser);
 
 // retrieve user playlist
-router.get("/playlist", verifyToken, populatePlaylist);
+router.get("/playlist", verifyToken, findUserPlaylist);
 
 // add to user playlist
 router.put("/playlist/add/:videoId", verifyToken, addToUserPlaylist);

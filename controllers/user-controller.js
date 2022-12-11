@@ -1,5 +1,6 @@
 const { createError } = require("../utils/error");
 const { User, Video } = require("../models");
+const { populatePlaylist } = require("../services/user-service");
 
 const findUser = async (req, res, next) => {
   if (req.params.id === req.user.id || req.user.isAdmin) {
@@ -59,12 +60,10 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-const populatePlaylist = async (req, res, next) => {
+const findUserPlaylist = async (req, res, next) => {
   try {
     const { playlist } = await User.findById(req.user.id);
-    const populatedPlaylist = await Promise.all(
-      playlist.map((videoId) => Video.findById(videoId))
-    );
+    const populatedPlaylist = await populatePlaylist(playlist);
 
     res.status(200).json(populatedPlaylist);
   } catch (err) {
@@ -82,9 +81,9 @@ const addToUserPlaylist = async (req, res, next) => {
       { new: true }
     );
 
-    const { password, ...returnedUserData } = updatedUser._doc;
+    const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
 
-    res.status(200).json(returnedUserData);
+    res.status(200).json(updatedPlaylist);
   } catch (err) {
     next(err);
   }
@@ -99,9 +98,9 @@ const removeFromUserPlaylist = async (req, res, next) => {
       { new: true }
     );
 
-    const { password, ...returnedUserData } = updatedUser._doc;
+    const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
 
-    res.status(200).json(returnedUserData);
+    res.status(200).json(updatedPlaylist);
   } catch (err) {
     next(err);
   }
@@ -130,5 +129,5 @@ module.exports = {
   findAllUsers,
   addToUserPlaylist,
   removeFromUserPlaylist,
-  populatePlaylist,
+  findUserPlaylist,
 };
