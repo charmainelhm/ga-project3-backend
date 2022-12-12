@@ -1,4 +1,4 @@
-const { Video } = require("../models");
+const { Video, User } = require("../models");
 
 const populatePlaylist = async (videoIdArr) => {
   const playlist = await Promise.all(
@@ -8,4 +8,13 @@ const populatePlaylist = async (videoIdArr) => {
   return playlist;
 };
 
-module.exports = { populatePlaylist };
+const updateUserPlaylist = async (videoId) => {
+  await User.updateMany(
+    {},
+    {
+      $pull: { playlist: videoId },
+    }
+  );
+};
+
+module.exports = { populatePlaylist, updateUserPlaylist };
