@@ -1,5 +1,6 @@
 const { Video } = require("../models");
 const { createError } = require("../utils/error");
+const { updateUserPlaylist } = require("../services/user-service");
 
 const createVideo = async (req, res, next) => {
   if (req.user.isAdmin) {
@@ -53,14 +54,15 @@ const deleteVideo = async (req, res, next) => {
   if (req.user.isAdmin) {
     try {
       await Video.findByIdAndDelete(req.params.id);
+      await updateUserPlaylist(req.params.id);
 
-      res.status(200).json("User has been deleted");
+      res.status(200).json("Video has been deleted");
     } catch (err) {
       next(err);
     }
   } else {
     return next(
-      createError(403, "You are not authorised to delete this user's account!") // if user is not update his/her own account or user is not an admin
+      createError(403, "You are not authorised to delete this video!") // if user is not update his/her own account or user is not an admin
     );
   }
 };
