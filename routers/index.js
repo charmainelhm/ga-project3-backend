@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
 const { router: userRouter } = require("./user-router");
@@ -6,6 +7,12 @@ const { router: authRouter } = require("./auth-router");
 const { router: videoRouter } = require("./video-router");
 
 // middleware
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 
