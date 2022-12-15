@@ -2,15 +2,25 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const videoSchema = new Schema(
+const VideoSchema = new Schema(
   {
+    userId: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
     },
-    description: String,
-    thumbnail: String,
-    youtubeId: {
+    description:{
+      type: String,
+      required: true,
+    },
+    thumbnail:{
+      type: String, 
+      required: true,
+    },
+    youtubeId:{
       type: String,
       required: true,
       unique: true,
@@ -23,6 +33,6 @@ const videoSchema = new Schema(
   { timestamps: true }
 );
 
-const Video = mongoose.model("Video", videoSchema);
+const Video = mongoose.model("Video", VideoSchema);
 
 module.exports = Video;

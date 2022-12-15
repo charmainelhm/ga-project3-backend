@@ -1,3 +1,4 @@
+import { createError } from '../error.js'
 import Comment from '../models/Comment.js';
 import Video from '../models/Video.js';
 
@@ -13,8 +14,14 @@ export const addComment = async(req, res, next)=>{
 
 export const deleteComment = async(req, res, next)=>{
     try{
-        const comment = await Comment.findbyId(res.params.id)
-        const video = await Video.findbyId(res.params.id)
+        const comment = await Comment.findbyId(res.params.id);
+        const video = await Video.findbyId(res.params.id);
+        if (req.user.id === comment.userId || req.user.id === video.userId) {
+            await Comment.findbyIdAndDelete(req.params.id)
+            res.status(200).json('The comment has been deleted.')
+        }else{
+            return next(createError(403, 'You can only delete your own comments!'))
+        }
     }catch(err){
         next(err)
     }
@@ -22,7 +29,8 @@ export const deleteComment = async(req, res, next)=>{
 
 export const getComments = async(req, res, next)=>{
     try{
-
+        const comments = await Comment.find({videoId:req.params.videoId})
+        res.status(200).json(comments);
     }catch(err){
         next(err)
     }
