@@ -2,6 +2,7 @@
 const mongoose = require("mongoose");
 const User = require("./user"); // import user schema
 const Video = require("./video"); // import video schema
+const Comment = require("./comment"); // import comments schema
 
 const mongoURI = process.env.MONGO_URL + process.env.MONGO_DB;
 const db = mongoose.connection;
@@ -19,4 +20,5 @@ db.on("disconnected", () => console.log("mongo disconnected"));
 module.exports = {
   User,
   Video,
+  Comment,
 };

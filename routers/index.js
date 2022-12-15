@@ -5,6 +5,7 @@ const app = express();
 const { router: userRouter } = require("./user-router");
 const { router: authRouter } = require("./auth-router");
 const { router: videoRouter } = require("./video-router");
+const { router: commentRouter } = require("./comments-router");
 
 // middleware
 app.use(
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/users", userRouter);
 app.use("/api/videos", videoRouter);
+app.use("/api/comments", commentRouter);
 
 app.get("/", (req, res) => {
   res.send("Project 3 Backend");
