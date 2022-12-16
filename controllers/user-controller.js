@@ -3,21 +3,12 @@ const { User, Video } = require("../models");
 const { populatePlaylist } = require("../services/user-service");
 
 const findUser = async (req, res, next) => {
-  if (req.params.id === req.user.id || req.user.isAdmin) {
-    try {
-      const user = await User.findById(req.params.id);
-      console.log(user);
-      res.status(200).json(user);
-    } catch (err) {
-      next(err);
-    }
-  } else {
-    return next(
-      createError(
-        403,
-        "You are not authorised to retrieve this user's account!"
-      )
-    );
+  try {
+    const user = await User.findById(req.params.id);
+    console.log(user);
+    res.status(200).json(user);
+  } catch (err) {
+    next(err);
   }
 };
 

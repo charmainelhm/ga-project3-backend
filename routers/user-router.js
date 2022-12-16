@@ -14,7 +14,7 @@ const { verifyToken } = require("../utils/verifyToken.js");
 router.get("/", verifyToken, findAllUsers);
 
 // get user by id
-router.get("/find/:id", verifyToken, findUser);
+router.get("/find/:id", findUser);
 
 // update user by id
 router.put("/:id", verifyToken, updateUser);
