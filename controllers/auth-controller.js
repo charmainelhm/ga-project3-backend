@@ -48,7 +48,16 @@ const signin = async (req, res, next) => {
   }
 };
 
+const logout = (req, res, next) => {
+  try {
+    res.clearCookie("access_token").json({ success: true });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   createUser,
   signin,
+  logout,
 };
