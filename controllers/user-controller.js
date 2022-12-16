@@ -81,7 +81,8 @@ const addToUserPlaylist = async (req, res, next) => {
       { new: true }
     );
 
-    const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
+    // const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
+    const updatedPlaylist = updatedUser.playlist;
 
     res.status(200).json(updatedPlaylist);
   } catch (err) {
@@ -98,7 +99,8 @@ const removeFromUserPlaylist = async (req, res, next) => {
       { new: true }
     );
 
-    const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
+    // const updatedPlaylist = await populatePlaylist(updatedUser.playlist);
+    const updatedPlaylist = updatedUser.playlist;
 
     res.status(200).json(updatedPlaylist);
   } catch (err) {

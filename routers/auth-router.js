@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { createUser, signin } = require("../controllers/auth-controller");
+const { verifyToken } = require("../utils/verifyToken");
+const {
+  createUser,
+  signin,
+  logout,
+} = require("../controllers/auth-controller");
 
 router.get("/", (req, res) => {
   res.send("Testing authentication route");
@@ -11,5 +16,6 @@ router.post("/signup", createUser);
 // Sign in
 router.post("/signin", signin);
 // Sign out
+router.get("/logout", verifyToken, logout);
 
 module.exports = { router };
