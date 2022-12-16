@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const httpStatus = require("http-status");
 const { createError } = require("../utils/error");
+const { NO_CONTENT } = require("http-status");
 
 const createUser = async (req, res, next) => {
   try {
@@ -50,7 +51,12 @@ const signin = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   try {
-    res.clearCookie("access_token").json({ success: true });
+    res
+      .clearCookie("access_token", {
+        httpOnly: true,
+        path: "/",
+      })
+      .json({ success: true });
   } catch (err) {
     next(err);
   }
