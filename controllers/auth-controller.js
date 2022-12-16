@@ -38,12 +38,13 @@ const signin = async (req, res, next) => {
     );
     const { password, ...returnedUserData } = user._doc;
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json(returnedUserData);
+    res.status(200).json({ ...returnedUserData, access_token: token });
+    // res
+    //   .cookie("access_token", token, {
+    //     httpOnly: true,
+    //   })
+    //   .status(200)
+    //   .json({...returnedUserData, access_token: token});
   } catch (err) {
     next(err);
   }
