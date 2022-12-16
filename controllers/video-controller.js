@@ -44,7 +44,7 @@ const getRandomVideo = async (req, res, next) => {
     while (previousVideoId === nextVideo._id) {
       nextVideo = await Video.aggregate([{ $sample: { size: 1 } }]);
     }
-    res.status(200).json(nextVideo);
+    res.status(200).json(nextVideo[0]);
   } catch (err) {
     next(err);
   }
