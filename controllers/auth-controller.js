@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const httpStatus = require("http-status");
 const { createError } = require("../utils/error");
+const { NO_CONTENT } = require("http-status");
 
 const createUser = async (req, res, next) => {
   try {
@@ -37,12 +38,13 @@ const signin = async (req, res, next) => {
     );
     const { password, ...returnedUserData } = user._doc;
 
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json(returnedUserData);
+    res.status(200).json({ ...returnedUserData, access_token: token });
+    // res
+    //   .cookie("access_token", token, {
+    //     httpOnly: true,
+    //   })
+    //   .status(200)
+    //   .json({...returnedUserData, access_token: token});
   } catch (err) {
     next(err);
   }
@@ -50,7 +52,12 @@ const signin = async (req, res, next) => {
 
 const logout = (req, res, next) => {
   try {
-    res.clearCookie("access_token").json({ success: true });
+    res
+      .clearCookie("access_token", {
+        httpOnly: true,
+        path: "/",
+      })
+      .json({ success: true });
   } catch (err) {
     next(err);
   }

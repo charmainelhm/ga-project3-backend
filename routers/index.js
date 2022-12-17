@@ -10,7 +10,7 @@ const { router: commentRouter } = require("./comments-router");
 // middleware
 app.use(
   cors({
-    origin: "*",
+    origin: true,
     credentials: true,
   })
 );
