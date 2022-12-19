@@ -5,8 +5,8 @@ const { populatePlaylist } = require("../services/user-service");
 const findUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    console.log(user);
-    res.status(200).json(user);
+    const { name, image, _id } = user._doc;
+    res.status(200).json({ name, image, _id });
   } catch (err) {
     next(err);
   }
