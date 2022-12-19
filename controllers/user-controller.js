@@ -27,6 +27,17 @@ const findAllUsers = async (req, res, next) => {
   }
 };
 
+const retrieveUserInfo = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const { password, ...returnedUserData } = user._doc;
+
+    res.status(200).json({ ...returnedUserData });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const updateUser = async (req, res, next) => {
   if (req.params.id === req.user.id || req.user.isAdmin) {
     try {
@@ -123,4 +134,5 @@ module.exports = {
   addToUserPlaylist,
   removeFromUserPlaylist,
   findUserPlaylist,
+  retrieveUserInfo,
 };

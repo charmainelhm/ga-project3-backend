@@ -8,6 +8,7 @@ const {
   findUserPlaylist,
   addToUserPlaylist,
   removeFromUserPlaylist,
+  retrieveUserInfo,
 } = require("../controllers/user-controller");
 const { verifyToken } = require("../utils/verifyToken.js");
 
@@ -15,6 +16,9 @@ router.get("/", verifyToken, findAllUsers);
 
 // get user by id
 router.get("/find/:id", findUser);
+
+// retrieve own user information
+router.get("/retrieve", verifyToken, retrieveUserInfo);
 
 // update user by id
 router.put("/:id", verifyToken, updateUser);
