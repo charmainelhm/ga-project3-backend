@@ -5,8 +5,8 @@ const { populatePlaylist } = require("../services/user-service");
 const findUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    console.log(user);
-    res.status(200).json(user);
+    const { name, image, _id } = user._doc;
+    res.status(200).json({ name, image, _id });
   } catch (err) {
     next(err);
   }
@@ -24,6 +24,17 @@ const findAllUsers = async (req, res, next) => {
     return next(
       createError(403, "You are not authorised to retrieve all users' account!") // if user id do not match or if user is not an admin update will not be allowed
     );
+  }
+};
+
+const retrieveUserInfo = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    const { password, ...returnedUserData } = user._doc;
+
+    res.status(200).json({ ...returnedUserData });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -123,4 +134,5 @@ module.exports = {
   addToUserPlaylist,
   removeFromUserPlaylist,
   findUserPlaylist,
+  retrieveUserInfo,
 };
